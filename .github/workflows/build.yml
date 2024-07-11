@@ -32,8 +32,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: Build README
-        run: python build_readme.py
+        run: node build_readme.js
 
       - name: Commit and push if README changed
         run: |
