@@ -19,29 +19,16 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: Configure pip caching
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build database
-        run: python build_database.py
-
-      - name: Update README
-        run: |-
-          python update_readme.py --rewrite
-          cat README.md
+      - name: Build README
+        run: python build_readme.py
 
       - name: Commit and push if README changed
-        run: |-
+        run: |
           git diff
           git config --global user.email "actions@users.noreply.github.com"
           git config --global user.name "README-bot"
