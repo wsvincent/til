@@ -11,7 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        token: ${{ secrets.PAT }}
         fetch-depth: 0
     
     - name: Set up Python
@@ -28,7 +27,7 @@ jobs:
         def generate_toc(root_dir):
             toc = "# Table of Contents\n\n"
             for root, dirs, files in os.walk(root_dir):
-                dirs[:] = [d for d in dirs if not d.startswith('.')]  # ignore hidden directories
+                dirs[:] = [d for d in dirs if not d.startswith('.')]
                 level = root.replace(root_dir, '').count(os.sep)
                 indent = '  ' * level
                 if level > 0:
@@ -69,6 +68,6 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add README.md
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update TOC" && git push)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update TOC" && git push origin HEAD:${{ github.ref }})
       env:
-        GITHUB_TOKEN: ${{ secrets.PAT }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
