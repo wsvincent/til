@@ -10,6 +10,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.PAT }}
+        fetch-depth: 0
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -66,4 +69,5 @@ jobs:
         git config --local user.name "github-actions[bot]"
         git add README.md
         git diff --quiet && git diff --staged --quiet || (git commit -m "Update TOC" && git push)
-      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
