@@ -28,12 +28,13 @@ jobs:
         def generate_toc(root_dir):
             toc = "# Table of Contents\n\n"
             for root, dirs, files in os.walk(root_dir):
+                dirs[:] = [d for d in dirs if not d.startswith('.')]  # ignore hidden directories
                 level = root.replace(root_dir, '').count(os.sep)
                 indent = '  ' * level
                 if level > 0:
                     folder_name = os.path.basename(root)
                     toc += f"{indent}- {folder_name}/\n"
-                for file in files:
+                for file in sorted(files):
                     if file.endswith('.md') and file != 'README.md':
                         file_path = os.path.join(root, file)
                         rel_path = os.path.relpath(file_path, root_dir)
