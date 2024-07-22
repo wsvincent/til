@@ -1,6 +1,17 @@
 import os
 
 
+def get_md_title(file_path):
+    with open(file_path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith("# "):
+                return line[2:]  # Return the title without the '# '
+    return os.path.splitext(os.path.basename(file_path))[
+        0
+    ]  # Return filename without extension if no title found
+
+
 def generate_toc(root_dir):
     toc = ["# Table of Contents\n"]
 
@@ -17,14 +28,16 @@ def generate_toc(root_dir):
                 toc.append(f"{indent}- [{folder_name}]({relative_path})\n")
 
             for file in md_files:
-                file_path = os.path.join(relative_path, file)
-                toc.append(f"{indent}  - [{file}]({file_path})\n")
+                file_path = os.path.join(root, file)
+                title = get_md_title(file_path)
+                file_link = os.path.join(relative_path, file)
+                toc.append(f"{indent}  - [{title}]({file_link})\n")
 
     return "".join(toc)
 
 
 def write_readme(content, output_file="README.md"):
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write(content)
 
 
