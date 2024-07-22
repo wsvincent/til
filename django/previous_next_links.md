@@ -143,4 +143,4 @@ And here is the template that uses this context data for the previous/next links
 {% endblock %}
 ```
 
-This works and the template logic means it doesn't show previous or next links of there isn't one.
+This works and the template logic means it doesn't show previous or next links on there isn't one.
